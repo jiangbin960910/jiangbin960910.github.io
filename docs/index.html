@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片展示 - 企业</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --secondary: #38bdf8;
+            --accent: #a855f7;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --gradient-accent: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.8;
+            color: var(--primary);
+            background: var(--light);
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-telegram {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--gradient-accent);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .nav-telegram span {
+            font-size: 1.1rem;
+        }
+
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* 图片展示 */
+        .gallery {
+            padding: 120px 5% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-title h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-title span {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gallery-title p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay p {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--gradient);
+            text-align: center;
+            padding: 3rem 2rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-telegram {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-telegram .contact-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: var(--gradient-accent);
+            color: white;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .footer-telegram .footer-icon {
+            font-size: 1.3rem;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .nav-telegram {
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-telegram .contact-display {
+                padding: 0.9rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem 5%;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                gap: 0.75rem;
+            }
+
+            .nav-telegram {
+                padding: 0.35rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .nav-telegram span {
+                font-size: 1rem;
+            }
+
+            .gallery {
+                padding: 100px 5% 60px;
+            }
+
+            .gallery-title h2 {
+                font-size: 1.6rem;
+            }
+
+            .footer {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .footer-telegram .contact-display {
+                padding: 0.8rem 1.25rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">企业名称</div>
+            <ul class="nav-links">
+                <li><a href="#gallery">产品展示</a></li>
+                <li class="nav-telegram">
+                    <span>✉️</span>
+                    Telegram @mc99881
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 图片展示 -->
+    <section class="gallery" id="gallery">
+        <div class="gallery-title">
+            <h2>产品<span>展示</span></h2>
+            <p>为您的业务提供专业的解决方案。</p>
+        </div>
+        <div class="gallery-grid" id="galleryGrid">
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-title">详情请咨询</div>
+        <div class="footer-telegram">
+            <div class="contact-display">
+                <span class="footer-icon">✉️</span>
+                <span>Telegram: @mc99881</span>
+            </div>
+        </div>
+        <p>版权所有 © 企业名称</p>
+    </footer>
+
+    <script>
+        // 图片描述配置
+        const descriptions = {
+            1: "图片1的介绍",
+            2: "图片2的介绍",
+            3: "图片3的介绍",
+            4: "图片4介绍",
+            5: "图片5介绍",
+            6: "图片6介绍"
+        };
+
+        // 加载图片展示
+        async function loadGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            let imageNumber = 1;
+
+            while (imageNumber <= 100) { // 限制最多检测100张
+                const imagePath = `index/img${imageNumber}.jpg`;
+                const imageExists = await checkImageExists(imagePath);
+
+                if (imageExists) {
+                    const description = descriptions[imageNumber] || "";
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+
+                    galleryItem.innerHTML = `
+                        <img src="${imagePath}" alt="${description}">
+                        <div class="gallery-overlay">
+                            <p>${description}</p>
+                        </div>
+                    `;
+
+                    galleryGrid.appendChild(galleryItem);
+                    imageNumber++;
+                } else {
+                    break; // 找不到图片就停止
+                }
+            }
+        }
+
+        // 检查图片是否存在
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+</body>
+</html>
